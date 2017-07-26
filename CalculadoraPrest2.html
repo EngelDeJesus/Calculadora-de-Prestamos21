@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Calculadora de Prestamos</title>
+		<meta name="viewpor" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" href="hojaestilo.css">
+	</head>
+	<body>
+
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<div class="container">
+
+				<div class="row">
+					<div class="col-lg-7 col-lg-offset-2">
+						<center><pre>Calculadora de Préstamos</pre></center>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-3 col-lg-offset-3">
+						<p class="whitefont">Monto del préstamo (RD$) </p>
+					</div>
+					<div class="col-lg-2">
+						<input type="number" id="monto">*
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-3 col-lg-offset-3">
+						<p class="whitefont">Tasa de porcentaje anual (%) </p>
+					</div>
+					<div class="col-lg-2">
+						<input type="number" id="tasa">* 
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-3 col-lg-offset-3">
+						<p class="whitefont">Plazo </p>
+					</div>
+					<div class="col-lg-2">
+						<input type="number" placeholder="Cantidad de meses" id="plazo">*
+					</div>
+				</div>
+		<!--
+				<div class="row">
+					<div class="col-lg-3 col-lg-offset-3">
+						<p>Frecuencia de amortización</p>
+					</div>
+					<div class="col-lg-2">
+						<input type="text">*
+					</div>
+				</div>
+		-->
+				<div class="row">
+					<div class="col-lg-3 col-lg-offset-3">
+						<p class="whitefont">Ingresos mensuales</p>
+					</div>
+					<div class="col-lg-2">
+						<input type="number" placeholder="Su salario" id="salario">
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-lg-7 col-lg-offset-2">
+						<p id="requeridos">Los datos con (*) son requeridos.</p>
+						<center><button type="button" class="boton" onclick="calcular_amortizacion()">
+						Calcular
+						</button></center>
+						<br>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-lg-7 col-lg-offset-2" id="result0">
+						<center><pre>Resultados</pre></center>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-2 col-lg-offset-3 well" id="result1">
+						<p>Cuota mensual: </p><p id="cuotamen"></p>
+					</div>
+					<div class="col-lg-2 col-lg-offset-1 well" id="result2">
+						<p>Interés mensual:</p><p id="interesmensual"></p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-2 col-lg-offset-3 well" id="result3">
+						<p>Interés total:</p><p id="interestotal"></p>
+					</div>
+					<div class="col-lg-2 well col-lg-offset-1" id="result4">
+						<p>Capacidad de endeudamiento:</p><p id="endeudamiento"></p>
+					</div>
+				</div>
+				
+		</div>
+
+		<script type="text/javascript">
+
+			function calcular_amortizacion(){
+
+				var monto = Math.abs(document.getElementById('monto').value);
+				var tasa = Math.abs(document.getElementById('tasa').value);
+				var plazo = Math.abs(document.getElementById('plazo').value);
+				var salario = Math.abs(document.getElementById('salario').value);
+
+				var cuotamen;
+				var interesmen;
+				var interestotal;
+				var endeud;
+
+				tasa = (tasa/100)/12;
+				//Calculando cuota mensual
+				cuotamen = (tasa*monto)/(1-(1+tasa)**-(plazo));
+				document.getElementById('cuotamen').innerHTML = cuotamen;
+
+				//Calculando interes mensual
+				interesmen = monto*tasa;
+				document.getElementById('interesmensual').innerHTML = interesmen;
+
+				//Calculando interes total
+				interestotal = (cuotamen*plazo) - monto;
+				document.getElementById('interestotal').innerHTML = interestotal;
+
+				//Calculando endeudamiento
+				endeud = cuotamen/salario*100;
+				if(endeud>30){
+					document.getElementById('endeudamiento').innerHTML = "<p>LA CUOTA A PAGAR EXCEDE EL 30% DE SUS INGRESOS</p>" 
+																			+ endeud + "% de sus ingresos mensuales";
+				}else{
+					document.getElementById('endeudamiento').innerHTML = endeud + "% de sus ingresos mensuales";
+				}
+
+				document.getElementById("result0").style.visibility = "visible";
+				document.getElementById("result1").style.visibility = "visible";
+				document.getElementById("result2").style.visibility = "visible";
+				document.getElementById("result3").style.visibility = "visible";
+				
+				//Condicion para que no aparezca la parte de Endeudamiento si lo dejan vacio
+				if(salario==""){
+					document.getElementById("result4").style.visibility = 0;
+				}else{
+					document.getElementById("result4").style.visibility = "visible";
+				}
+
+			}
+
+			function borrar(){
+
+			}
+
+		</script>
+
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+	</body>
+
+</html>	
